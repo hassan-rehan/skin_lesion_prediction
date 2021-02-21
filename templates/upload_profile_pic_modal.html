@@ -1,0 +1,123 @@
+<div class="modal fade" id="upload-profile-pic-modal" tabindex="-1" role="dialog" aria-labelledby="uploadProfilePicModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    {% if request.session.user_type == 0 %}
+      <form id="profile-pic-upload-form" method="post" action="/patient/{{ request.session.user_id }}/updateProfilePicture">
+    {% else %}
+      <form id="profile-pic-upload-form" method="post" action="/doctor/{{ request.session.user_id }}/updateProfilePicture">
+    {% endif %}
+    
+      {% csrf_token %}
+      <div class="modal-content" style="background-color: #757f9a;background-image: linear-gradient(147deg, #757f9a 0%, #d7dde8 100%);">
+  
+        <div class="modal-header">
+          <h5 class="modal-title" id="uploadProfilePicModalLabel">Update Profile Picture</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        
+        <div class="modal-body">
+           
+            <!-- Upload image input-->
+            <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
+                <input id="profile-pic-upload" name="new-profile-pic" type="file" accept='image/*' class="form-control border-0" required>
+                <label id="profile-pic-upload-label" for="profile-pic-upload" class="font-weight-light text-muted">Choose file</label>
+                <div class="input-group-append">
+                    <label for="profile-pic-upload" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-cloud-upload mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
+                </div>
+            </div>
+
+            <!-- Uploaded image area-->
+            <div class="pi-upload-display mt-4"><img id="imageResult" alt="" src="#" class="img-fluid rounded shadow-sm mx-auto d-block"></div>
+
+        </div>
+  
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" id="profile-pic-upload-button" class="btn btn-primary">Upload</button>
+        </div>
+  
+      </div>
+    </form>
+  
+    </div>
+  
+  </div>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+    
+        $('#upload-profile-pic-modal').on('hidden.bs.modal', function () {
+            $('.pi-upload-display #imageResult').attr('src','#');;
+            $('#profile-pic-upload').val("");
+            $('#profile-pic-upload-label').text("Choose file");
+            $("#profile-pic-upload-button").html("Upload");
+            $("#profile-pic-upload-button").prop("disabled", false);
+        });
+
+        $("#profile-pic-upload-form").submit(function (event) {
+            event.preventDefault();
+            var form=$(this);
+            var data=new FormData(form[0]);
+            var postId=data.get("post-id");
+            var upload_button=$("#profile-pic-upload-button");
+            upload_button.html("<i class='fa fa-spinner fa-pulse fa-fw' aria-hidden='true'></i>"); 
+            upload_button.prop("disabled", true);
+
+            $.ajax({
+                type: form.attr("method"),
+                enctype: 'multipart/form-data',
+                url: form.attr("action"),
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 15000,
+                success: function (data){
+                    if(data!="false"){
+                        upload_button.html("Uploaded sucessfully."); 
+                        $('#profile-picture').attr('src',data+"?"+new Date().getTime());  
+                    }
+                    else{
+                        $("#upload-profile-pic-modal .modal-body").append("<div class='alert alert-success mt-2' role='alert' id='post-sub-message'>Something went wrong. Please try again.</div>");
+                        setTimeout(function() {
+                            if ($('#post-sub-message').length > 0) {
+                                $('#post-sub-message').fadeOut('slow',function(){
+                                    $('#post-sub-message').remove(); 
+                                });
+                            } 
+                        }, 5000);
+                        upload_button.html("Submit");
+                        upload_button.prop("disabled", false);
+                    }
+                },
+                error: function (e) {
+                    $("#upload-profile-pic-modal .modal-body").append("<div class='alert alert-success mt-2' role='alert' id='post-sub-message'>Something went wrong. Please try again.</div>");
+                    setTimeout(function() {
+                        if ($('#post-sub-message').length > 0) {
+                            $('#post-sub-message').fadeOut('slow',function(){
+                                $('#post-sub-message').remove(); 
+                            });
+                        } 
+                    }, 5000);
+                    upload_button.html("Submit");
+                    upload_button.prop("disabled", false);
+                }
+            });
+        });
+
+        $('#profile-pic-upload').on('change',function(){
+            var fileName = $(this).val().replace(/.*(\/|\\)/, '');
+            $(this).next('#profile-pic-upload-label').html(fileName);
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.pi-upload-display #imageResult').attr('src',e.target.result);
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+        
+    });
+</script>

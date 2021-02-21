@@ -1,0 +1,101 @@
+
+<div class="modal fade" id="submit-proposal-modal" tabindex="-1" role="dialog" aria-labelledby="submitProposalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    
+        <form method="POST" id="proposal-submission-form" style="width:100%;" action="/patient/{{ request.session.user_id }}/submit_proposal/">
+            {% csrf_token %}
+            <div class="modal-content">
+        
+                <div class="modal-header">
+                <h5 class="modal-title" id="submitProposalLabel">Proposal</h5>
+                <button type="button" id="modal-close-button-1" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="form-group">
+                        <p class="m-md-bottom modal-form-field-guide">Breifly describe the problem you are facing. We will share your profile as well with doctor.</p>
+                        <textarea class="form-control" name="my-proposal" rows="4" id="my-proposal" required></textarea>
+                    </div>
+                    <input type="hidden" name="doctor-id" value="">
+                </div>
+        
+            
+        
+                <div class="modal-footer">
+                    <button type="button" id="modal-close-button-2" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="proposal-submission-button" class="btn btn-primary">Submit</button>
+                </div>
+        
+            </div>
+        </form>
+  
+    </div>
+  
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.submit-proposal-btn').click(function(){
+            $("#proposal-submission-form")[0].reset();
+            $("#proposal-submission-button").html("Submit");
+            $("#proposal-submission-button").prop("disabled", false);
+            $("input[name='doctor-id']").attr("value",$(this).data("did"));
+        });
+
+        $("#proposal-submission-form").submit(function (event) {
+                event.preventDefault();
+                var data = new FormData($(this)[0]);
+                var docId=data.get("doctor-id");
+                var url=$(this).attr('action')+docId;
+                
+                $("#proposal-submission-button").html("<i class='fa fa-spinner fa-pulse fa-fw' aria-hidden='true'></i>"); 
+                $("#proposal-submission-button").prop("disabled", true);
+                $.ajax({
+                    type: $(this).attr('method'),
+                    url: url,
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 10000,
+                    success: function (data){
+                        if(data=="true"){
+                            $("#proposal-submission-button").html("Proposal submitted sucessfully.");
+                            $("#"+docId+"-submit-button").html("Already submitted");
+                            $("#"+docId+"-submit-button").prop("disabled", true);                    
+                        }
+                        else{
+                            $("#submit-proposal-modal .modal-body").append("<div class='alert alert-success mt-2' role='alert' id='sub-message'>Something went wrong. Please try again.</div>");
+                                setTimeout(function() {
+                                    if ($('#sub-message').length > 0) {
+                                        $('#sub-message').fadeOut('slow',function(){
+                                            $('#sub-message').remove(); 
+                                        });
+                                    } 
+                                }, 5000);
+                            $("#proposal-submission-button").html("Submit");
+                            $("#proposal-submission-button").prop("disabled", false);
+                        }
+                    },
+                    error: function (e) {
+                        if(e.statusText == 'timeout')
+                            $("#submit-proposal-modal .modal-body").append("<div class='alert alert-success mt-2' role='alert' id='sub-message'>Something went wrong. Please try again.</div>");
+                        else
+                            $("#submit-proposal-modal .modal-body").append("<div class='alert alert-success mt-2' role='alert' id='sub-message'>Something went wrong. Please try again later.</div>");
+
+                        setTimeout(function() {
+                            if ($('#sub-message').length > 0) {
+                                $('#sub-message').fadeOut('slow',function(){
+                                    $('#sub-message').remove(); 
+                                });
+                            } 
+                        }, 5000);
+                        $("#proposal-submission-button").html("Submit");
+                        $("#proposal-submission-button").prop("disabled", false);
+                    }
+                });
+            });
+    })
+</script>

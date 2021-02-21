@@ -1,0 +1,164 @@
+
+{% extends 'patient-base.html' %}
+
+{% block customLinks %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#chatlist-tab a").first().addClass('active');
+        $("#chatlist-tabContent .tab-pane").first().addClass('active');
+
+        $(".msg_send_btn").on("click",function(e) {
+            e.preventDefault();
+            var btn=$(this);
+            btn.prop("disabled",true);
+            var chat_id=btn.data('cid');
+            var currentChat=$('#'+chat_id+'-input');
+            var Message=currentChat.val();
+            
+            $.post(btn.data('href'),{csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),room_id: chat_id, message:Message},function(data){
+                if(data=='true'){
+                    currentChat.val('');
+                    $('#'+chat_id+'-tabContent .mesgs .msg_history').append("<div class='outgoing_msg'><div class='sent_msg'><p>"+Message+"</p><span class='time_date'>Just now</span></div></div>");
+                    btn.prop("disabled",false);
+                }
+                else{
+                    alert( "Something went wrong. Try again." );
+                    btn.prop("disabled",false);
+                }
+            }).fail(function(){
+                    alert( "Something went wrong. Try again." );
+                    btn.prop("disabled",false);
+                });
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="messaging">
+
+        <div class="inbox_msg">
+
+            <div class="inbox_people">
+
+                <div class="headind_srch">
+                    <div class="recent_heading">
+                        <h4>Recent</h4>
+                    </div>
+                    <div class="srch_bar">
+                        <div class="stylish-input-group">
+                            <input type="text" class="search-bar"  placeholder="Search" >
+                            <span class="input-group-addon">
+                            <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+                            </span> 
+                        </div>
+                    </div>
+                </div>
+
+                <div class="inbox_chat">
+                    <div class="nav flex-column nav-pills" id="chatlist-tab" role="tablist" aria-orientation="vertical">
+
+                    {% if messaging.length != 0 %}
+                        {% csrf_token %}
+                        {% load static %}
+                        {% for room in messaging %}
+                                <a class="nav-link" id="{{ room.room_id }}-tab" data-toggle="pill" href="#{{ room.room_id }}-tabContent" role="tab" aria-controls="{{ room.room_id }}-tabContent" aria-selected="true">
+                                    <div class="chat_list">
+                                        <div class="chat_people">
+                                            <div class="chat_img"> 
+                                            {% if room.doctor_pic == "" %}
+                                                <img src="{% static 'images/no-profile-pic.png' %}" alt="avatar">
+                                            {% else %}
+                                                <img src="{{ room.doctor_pic.url }}" alt="avatar">
+                                            {% endif %}
+                                            </div>
+                                            <div class="chat_ib">
+                                                {% with room.messages|last as last %}
+                                                    <h5>{{ room.doctor_name }} <span class="chat_date">{{ last.created_at }}</span></h5>
+                                                        <p>
+                                                            {{ last.message }}
+                                                        </p>                                                
+                                                {% endwith %}                                              
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                        {% endfor %}
+
+                    {% else %}
+                    <div class="chat_list">
+                        <div class="chat_people">
+                            <div class="chat_ib">
+                                <p>Your 'Chat list' is empty. Please send proposals on posts so that that interested people can find you.</p>
+                            </div>
+                        </div>
+                    </div>        
+                    {% endif %}       
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            {% if messaging.length != 0 %}
+                <div class="tab-content" id="chatlist-tabContent">
+                    {% for room in messaging %}
+
+                        <div class="tab-pane fade show" id="{{room.room_id}}-tabContent" role="tabpanel" aria-labelledby="{{ room.room_id }}-tab">
+                            
+                            <div class="mesgs"> 
+                                <div class="msg_history">
+                                    {% for msg in room.messages %}
+                                        {% if msg.sender_id == request.session.user_id %}
+                                            <div class="incoming_msg">
+                                                <div class="incoming_msg_img"> 
+                                                    {% if room.doctor_pic == "" %}
+                                                        <img src="{% static 'images/no-profile-pic.png' %}" alt="avatar">
+                                                    {% else %}
+                                                        <img src="{{ room.doctor_pic.url }}" alt="avatar">
+                                                    {% endif %} 
+                                                </div>
+                                                <div class="received_msg">
+                                                    <div class="received_withd_msg">
+                                                            <p>{{ msg.message }}</p>
+                                                            <span class="time_date">{{ msg.created_at }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% else %} 
+                                            <div class="outgoing_msg">
+                                                <div class="sent_msg">
+                                                    <p>{{ msg.message }}</p>
+                                                    <span class="time_date">{{ msg.created_at }}</span>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                    
+                                <div class="type_msg">
+                                    <div class="input_msg_write">
+                                    <input type="text" id="{{room.room_id }}-input" class="write_msg" placeholder="Type a message" />
+                                    <button class="msg_send_btn" data-cid="{{ room.room_id }}" data-href="/patient/{{ request.session.user_id }}/sendMessage" type="button"><i class="far fa-paper-plane" aria-hidden="true"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            
+                    {% endfor %}    
+                </div>
+            {% endif %}    
+            <!-- Tab content ends -->   
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

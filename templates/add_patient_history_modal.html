@@ -1,0 +1,103 @@
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#add-patient-history-form").submit(function (event) {
+            event.preventDefault();
+            var form = $(this);
+            var upload_button=$("#add-history-button");
+            upload_button.html("<i class='fa fa-spinner fa-pulse fa-fw' aria-hidden='true'></i>"); 
+            upload_button.prop("disabled", true);
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: {
+                    h_date : $('#h_date').val(),
+                    h_disease : $('#h_disease').val(),
+                    h_medicines : $('#h_medicines').val(),
+                    h_medicine_status : $('#h_medicine_status').val(),
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success:function(data){
+                    if(data!="false"){
+                        upload_button.html("Added sucessfully.");
+                        $(".patient-content-wrapper #history-tbody").append(data); 
+                        $(".patient-content-wrapper #no-history-row").remove();
+                    }
+                    else{
+                        $("#add-patient-history-modal .modal-body").append("<div class='alert alert-success mt-2' role='alert' id='post-sub-message'>Something wentss wrong. Please try again.</div>");
+                            setTimeout(function() {
+                                if ($('#post-sub-message').length > 0) {
+                                    $('#post-sub-message').fadeOut('slow',function(){
+                                        $('#post-sub-message').remove(); 
+                                    });
+                                } 
+                            }, 5000);
+                            upload_button.html("Save changes");
+                            upload_button.prop("disabled", false);
+                    }
+                },
+                error: function (xhr,errmsg,err) {
+                    console.log(xhr.status + ": " + xhr.responseText);
+                    $("#add-patient-history-modal .modal-body").append("<div class='alert alert-success mt-2' role='alert' id='info-message-form'>Something went wrong. Please try again.</div>");
+                    upload_button.html("Save changes");
+                    upload_button.prop("disabled", false);
+                }
+            });
+        });
+    });
+</script>
+
+
+<div class="modal fade" id="add-patient-history-modal" tabindex="-1" role="dialog" aria-labelledby="addHistoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    
+    <form method="POST" id="add-patient-history-form" action="/patient/{{ request.session.user_id }}/profile/add-medical-history">
+    {% csrf_token %}
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="addHistoryModalLabel">Add Medical History</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="h_date" class="modal-form-field-title">Date</label>
+                    <p class="m-md-bottom modal-form-field-guide">Choose the starting date when your medical treatment start.</p>
+                    <input class="form-control" type="text" name="h_date" id="h_date" required>
+                </div>
+    
+                <div class="form-group">
+                <label for="h_disease" class="modal-form-field-title">Disease</label>
+                <p class="m-md-bottom modal-form-field-guide">What was the disease you get treatment for ?</p>
+                <input type="text" name="h_disease" class="form-control" value="" id="h_disease" required>
+                </div>
+    
+                <div class="form-group">
+                <label for="h_medicines" class="modal-form-field-title">Medicine</label>
+                <p class="m-md-bottom modal-form-field-guide">Mention all the prescribed medicines.</p>
+                <input type="text" name="h_medicines" class="form-control" id="h_medicines" value="" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="h_medicine_status" class="modal-form-field-title">Medicine Status</label>
+                    <p class="m-md-bottom modal-form-field-guide">Are you currently taking these medicine ?</p>
+                    <select id="h_medicine_status" class="form-control" name="h_medicine_status" required>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+            </div>
+    
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" id="add-history-button" class="btn btn-primary">Save changes</button>
+            </div>
+  
+        </div>
+    </form>
+  
+    </div>
+  
+  </div>

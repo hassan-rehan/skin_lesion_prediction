@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg navbar-dark landing-nav indigo">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            {% load static %}
+            <img src="{% static 'images/nav-logo.png' %}" alt="Skin Lesion" style="width:8rem;">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto text-uppercase">
+                <li class="nav-item">
+                    <a class="nav-link home" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link hiw" href="#hiw_section">How it works</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link blogs" href="#blogs_section">Blogs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link login" href="{% url 'signin' %}">Login In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link signup" href="{% url 'patient_signup' %}">Sign Up</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

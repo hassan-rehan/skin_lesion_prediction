@@ -1,0 +1,167 @@
+ 
+{% extends 'doctor-base.html' %}
+
+
+{% block content %}
+ 
+ <!-- BEGIN: Main Menu-->
+<!-- start page content -->
+
+{% if patient_data != 0 and profile_data != 0 %}
+
+<div class="patient-content-wrapper">
+    <div class="page-content">
+        <div class="page-title text-center">Patient Profile</div>
+        <div class="row" style="margin:0;">
+            <div class="col-md-4 col-xs-12">
+                <div class="white-box">
+                    <div class="cardbox patient-profile text-center">
+                        {% load static %}
+                        {%  if profile_data.pic != "" %}
+                            <img id="profile-picture" class="rounded-circle" src="{{ profile_data.pic.url }}" width="80%" alt="Profile pic">
+                        {% else %}
+                            <img id="profile-picture" class="rounded-circle" src="{% static 'images/no-profile-pic.png' %}" width="80%" alt="Profile pic">
+                        {% endif %}
+                    </div>
+                    <div class="cardbox">
+                        <div class="header">
+                            <h4 class="font-bold">ABOUT PATIENT</h4>
+                        </div>
+                        <div class="body">
+                            <div class="user-btm-box">
+                                <!-- .row -->
+                                <div class="row text-center m-t-10">
+                                    <div class="col-lg-6 col-md-12 col-sm-6 col-xs-12 b-r">
+                                        <strong>Name</strong>
+                                        <p>{{ patient_data.first_name }} {{ patient_data.last_name }}</p>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12 col-sm-6 col-xs-12">
+                                        <strong>Occupation</strong>
+                                        <p>{{ profile_data.occupation }}</p>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                                <hr>
+                                <!-- .row -->
+                                <div class="row text-center m-t-10">
+                                    <div class="col-lg-6 col-md-12 col-sm-6 col-xs-12 b-r">
+                                        <strong>Email ID</strong>
+                                        <p>{{ patient_data.email }}</p>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12 col-sm-6 col-xs-12">
+                                        <strong>Phone</strong>
+                                        <p>{{ profile_data.phone }}</p>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                                <hr>
+                                <!-- .row -->
+                                <div class="row text-center m-t-10">
+                                    <div class="col-md-12"><strong>Address</strong>
+                                        <p>{{ profile_data.address }}, {{ patient_data.city }}, {{ patient_data.country }}.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 col-xs-12">
+                <div class="cardbox">
+                    <div class="body">
+                        <div class="mypost-list">
+                            <div class="post-box">
+                                <h4 class="font-bold">Introduction</h4>
+                                <hr>
+                                <p>{{ profile_data.introduction }}</p>
+                            </div>
+                            <hr>
+                            <div class="post-box">
+                                <h4 class="font-bold">General Report</h4>
+                                <hr>
+                                <h5>Heart Beat<span class="pull-right">{{ profile_data.heart_beat }} / minute</span></h5>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-success progress-bar-striped active"
+                                        role="progressbar" aria-valuenow="{{ profile_data.heart_beat }}" aria-valuemin="25"
+                                        aria-valuemax="150" style="width: {{ profile_data.heart_beat }}%"></div>
+                                </div>
+                                <h5>Blood Pressure<span class="pull-right">{{ profile_data.blood_pressure }} mmHg</span></h5>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                                        role="progressbar" aria-valuenow="{{ profile_data.blood_pressure }}" aria-valuemin="50"
+                                        aria-valuemax="200" style="width:{{ profile_data.blood_pressure }}%;"></div>
+                                </div>
+                                <h5>Sugar<span class="pull-right">{{ profile_data.sugar }} mg/dL</span></h5>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-primary progress-bar-striped active"
+                                        role="progressbar" aria-valuenow="{{ profile_data.sugar }}" aria-valuemin="0"
+                                        aria-valuemax="250" style="width:{{ profile_data.sugar }}%;"></div>
+                                </div>
+                                <h5>Haemoglobin<span class="pull-right">{{ profile_data.haemoglobin }} percent</span></h5>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-danger progress-bar-striped active"
+                                        role="progressbar" aria-valuenow="{{ profile_data.haemoglobin }}" aria-valuemin="0"
+                                        aria-valuemax="100" style="width:{{ profile_data.haemoglobin }}%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card card-topline-purple">
+                                            <div class="card-head">
+                                                <header>Past Visit History</header>
+                                            </div>
+                                            <div class="card-body ">
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped custom-table table-hover">
+                                                        <thead>
+                                                            <tr class="heading-row text-center">
+                                                                <th>Date</th>
+                                                                <th>Disease</th>
+                                                                <th>Medicines</th>
+                                                                <th>Currently taking</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="history-tbody">
+                                                            {% if history != 0 %}
+                                                                {% for h in history %}
+                                                                    <tr class="history-row text-center">
+                                                                        <td><i class="fas fa-calendar-alt text-primary"></i> {{ h.start_date }}</td>
+                                                                        <td>{{ h.disease }}</td>
+                                                                        <td><i class="fas fa-pills text-danger"></i> {{ h.medicines }}</td>
+                                                                        <td>{{ h.taking_medicine }}</td>
+                                                                    </tr>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                            <tr id="no-history-row"><td>No medical history to show.</td></tr>
+                                                            {% endif %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#PatientNav').remove();
+            $('.landing-footer').remove();
+            $('#edit-profile-modal-close-button-1').remove();
+            $('#edit-profile-modal-close-button-2').remove();
+            $('#edit-profile-modal').modal({backdrop: 'static', keyboard: false}, 'show');
+        });
+    </script>      
+    {% endif %}
+
+  {% endblock %}

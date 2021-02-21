@@ -1,0 +1,83 @@
+ 
+{% extends 'patient-base.html' %}
+
+{% block customLinks %}
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#model-form').submit(function(e) {
+                e.preventDefault();
+                var form = $(this);
+                var data=new FormData(form[0]);
+                btn  = $('#model-submit-btn');
+                btn.html("<i class='fa fa-spinner fa-pulse fa-fw' aria-hidden='true'></i>"); 
+                btn.prop("disabled", true);
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    enctype: form.attr('enctype'),
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success:function(data){
+                        if(data!="false"){
+                            $('#model-result').html(data);
+                            $('.model-result-wrapper').show();
+                        }
+                        else
+                            alert("Something went wrong. Please try again.");
+
+                        btn.html("Submit");
+                        btn.prop("disabled", false);
+                    },
+                    error: function (xhr,errmsg,err) {
+                        console.log(xhr.status + ": " + xhr.responseText);
+                        alert("Something went wrong. Please try again.");
+                        btn.html("Submit");
+                        btn.prop("disabled", false);
+                    }
+            });
+        });
+
+        $('#model-img-input').on('change',function(){
+          var fileName = $(this).val().replace(/.*(\/|\\)/, '');
+          $(this).next('#model-img-input-label').html(fileName);
+        });
+    });
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<div class ="model-main-container">
+    <div class="d-flex flex-column">
+        <div class="model-form-wrapper">
+            <form id="model-form" method="post" action="/patient/{{ request.session.user_id }}/models/skin-lesion/predict" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="model-form-label">Please upload the image of your infected skin area.<br>Clear and focused!</label>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input id="model-img-input" type="file" class="custom-file-input" name="lesion-image" required>
+                            <label class="custom-file-label" id="model-img-input-label" for="model-img-input">Choose file</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary" id="model-submit-btn">Submit</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="model-result-wrapper" style="display:none;">
+            <p class="model-result-paragraph">Our model predicted the following skin lesion from your given image<br> <span id="model-result"></span></p>
+        </div>
+    
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'patient-base.html' %}
+
+{% block customLinks %}
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        $(".delete-btn").on("click",function(e) {
+            e.preventDefault();
+            var btn=$(this);
+            btn.prop("disabled",true);
+            btn.html("<i class='fa fa-spinner fa-pulse fa-fw' aria-hidden='true'></i>");
+            $.post(btn.data("href"),{csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()},function(data){
+                if(data=='true'){
+                    $('#'+btn.data("pid")+'-proposal').remove();
+                    alert("Proposal deleted sucessfully.");
+                }
+                else{
+                    alert( "Something went wrong. Try again." );
+                    btn.html("Delete");
+                    btn.prop("disabled",false);
+                }
+            }).fail(function(){
+                    alert( "Something went wrong. Try again." );
+                    btn.html("Delete");
+                    btn.prop("disabled",false);
+                });
+        });
+
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid pr-content-wrapper my-5">
+            <div class="row justify-content-center">
+                <div class="proposal col-md-8">
+                    {% if proposals_data.length != 0 %}
+                        {% load static %}
+                        {% csrf_token %}
+
+                        {% for proposal in proposals_data %}                 
+                                <div class="card mt-3" id="{{ proposal.key }}-proposal">
+                                    <div class="card-header">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="mr-2">
+                                                    <a href="/doctor/{{ proposal.doctor_id }}/view_profile">
+                                                    {% if proposal.doctor_pic != "" %}
+                                                        <img class="rounded-circle" width="45" height="45" src="{{ proposal.doctor_pic.url }}" alt="Avatar">
+                                                    {% else %}
+                                                        <img class="rounded-circle" width="45" height="45" src="{% static 'images/no-profile-pic.png' %}" alt="Avatar">
+                                                    {% endif %}
+                                                    </a>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <div class="h7 text-muted">{{ proposal.doctor_name }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> {{ proposal.created_at }}</div>
+                                        <p class="paraCollapse collapse card-text" id="{{ proposal.key }}">
+                                            {{ proposal.proposal_data }}
+                                        </p>
+                                        <a role="button" class="collapsed" data-toggle="collapse" href="#{{ proposal.key }}" aria-expanded="false" aria-controls="{{ proposal.key }}"></a>
+                                        
+                                        <script type="text/javascript">
+                                            if( $('#{{ proposal.key }}').height() < 71 ){
+                                                $('#{{ proposal.key }}').next('a').remove();
+                                                $('#{{ proposal.key }}').removeClass("collapse");
+                                            }
+                                        </script>
+
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-success float-right delete-btn" data-pid="{{ proposal.key }}" data-href="/patient/{{ request.session.user_id }}/proposal/{{ proposal.key }}/delete">Delete</button>
+                                    </div>
+                                </div>
+                        {% endfor %}
+            
+                    {% else %}
+                        <div class="alert alert-success my-auto" role="alert" id="post-sub-message" style="text-align:center;">
+                            <h4>No proposal is submitted yet on this post.</h4>
+                        </div> 
+                    {% endif %}
+
+                </div>        
+            </div>
+    </div>
+
+    {% endblock %}
+
+

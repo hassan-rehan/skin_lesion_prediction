@@ -1,0 +1,200 @@
+{% extends 'landing-base.html' %}
+
+{% block content %}
+
+<div class="landing-container">
+
+    <!-- Carousel Content -->
+    <header class="pb-5">
+        <div id="carouselIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselIndicators" data-slide-to="1"></li>
+                <li data-target="#carouselIndicators" data-slide-to="2"></li>
+                <li data-target="#carouselIndicators" data-slide-to="3"></li>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+                <div class="carousel-item active">
+                    {% load static %}
+                    <img src="{% static 'images/landing-1.jpg' %}" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/landing-2.jpg' %}" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/landing-3.jpg' %}" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/coronavirus-tips.jpg' %}" alt="...">
+                </div>
+            </div>
+        </div>
+    </header>
+  
+    <!-- How it works Content -->
+    <section class="pb-5 text-center" id="hiw_section">
+        <header class="team-heading mb-5 p-4">
+            <div class="container">
+            <h1 class="font-weight-light text-white">How We Serve You</h1>
+            </div>
+        </header>
+        <div class="container"> 
+            <div class="row justify-content-center">
+                <div class="col-sm-6 col-lg-4 mb-3">
+                    <svg class="lnr services-icon">
+                        <use xlink:href="#lnr-magic-wand"></use>
+                    </svg>
+                    <h6>SKIN CANCER PREDICTION WEB APPLICATION</h6>
+                    <p class="text-muted mb-0">IN THIS WEBSITE WE ARE GOING TO SERVE YOU ABOUT YOUR SKIN IF YOU FACE ANY AMBUGIUITY YOU CAN ALSO DIRECT MESSGE TO DOCTOR</p>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-3">
+                    <svg class="lnr services-icon">
+                        <use xlink:href="#lnr-magic-wand"></use>
+                    </svg>
+                    <h6>PREDICT BY UPLOAD PICTURE</h6>
+                    <p class="text-muted mb-0">IN THIS WEBSITE YOU JUST UPLOAD YOUR SKIN PHOTO AND OUR TEAM SUGGEST OR TELL YOU IF YOU HAVE SKIN CANCER PROBLEM.</p>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-3">
+                    <svg class="lnr services-icon">
+                        <use xlink:href="#lnr-magic-wand"></use>
+                    </svg>
+                    <h6>TALK WITH DOCTOR</h6>
+                    <p class="text-muted mb-0">BY USING THIS WEB APPLICATION YOU CAN DIRECTLY TALK WITH DOCTOR AND DISCUSS YOUR PROBLEM.</p>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-3">
+                    <svg class="lnr services-icon">
+                        <use xlink:href="#lnr-magic-wand"></use>
+                    </svg>
+                    <h6>MAKE YOUR PROFILE</h6>
+                    <p class="text-muted mb-0"> YOU MUST COMPLETE YOUR PROFILE IF YOU WANT TO FIND BEST SOLUTION FOR YOUR PROBLEM</p>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-3">
+                    <svg class="lnr services-icon">
+                        <use xlink:href="#lnr-magic-wand"></use>
+                    </svg>
+                    <h6>TELL OUR DAILY USAGE MEDICINES</h6>
+                    <p class="text-muted mb-0">YOU MUST TELL YOUR MEDICINES BEFORE USING THIS  WEB APPLICATION</p>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-3">
+                    <svg class="lnr services-icon">
+                        <use xlink:href="#lnr-magic-wand"></use>
+                    </svg>
+                    <h6>COMPLETE PROFILE TELL ABOUR EVERYTHING</h6>
+                    <p class="text-muted mb-0">ALSO VERIFY YOUR PROFILE THROUGH GMAIL.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--Blogs Section-->
+    <section class="pb-5 text-center" id="blogs_section">
+        <header class="team-heading mb-5 p-4">
+            <div class="container">
+            <h1 class="font-weight-light text-white">From The Blog</h1>
+            </div>
+        </header>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-4 team-card">
+                    <div class="card shadow border-0">
+                        <img class="card-img-top" src="https://4ag46i294nta1038p13v77x1-wpengine.netdna-ssl.com/wp-content/uploads/laser-treatment-image.jpg" height="250" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title landing-card-title">Ask the Expert: Can Laser Treatment for Sun Damaged Skin Cause Skin Cancer?</h5>
+                            <p class="card-text intro">There are many laser treatments that help reverse sun damage and improve the appearance of skin. Our expert describes how they work and how they don’t increase the risk of developing skin cancer.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 team-card">
+                    <div class="card shadow border-0">
+                        <img class="card-img-top" src="https://4ag46i294nta1038p13v77x1-wpengine.netdna-ssl.com/wp-content/uploads/Screen-Shot-2020-10-27-at-12.22.53-PM-1024x548.png" height="250" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title landing-card-title">Ask the Expert: Do I Have to Wear Sunscreen Under My Mask?</h5>
+                            <p class="card-text intro">Wearing a face mask may offer you some additional protection, but it doesn’t replace the need for daily sunscreen use. This will not give you protect you completely from coronavirus.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 team-card">
+                    <div class="card shadow border-0">
+                        <img class="card-img-top" src="https://4ag46i294nta1038p13v77x1-wpengine.netdna-ssl.com/wp-content/uploads/FamilyHistory-1024x682.jpg" height="250" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title landing-card-title">Family Matters: What You Should Know About Your Family’s History of Melanoma</h5>
+                            <p class="card-text intro">So you’re sitting in the dermatologist’s waiting room, filling out the usual forms required for a doctor visit. After filling in the basics, you spot the next question and realize you’re stumped: it’s asking about your family’s medical history. Has anyone in your family had melanoma or any other form of skin cancer?.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 team-card">
+                    <div class="card shadow border-0">
+                        <img class="card-img-top" src="https://4ag46i294nta1038p13v77x1-wpengine.netdna-ssl.com/wp-content/uploads/scc-mohs-surgeon-340x240.jpg" height="250" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title landing-card-title">A Hole in My Head</h5>
+                            <p class="card-text intro">The little spot on my forehead didn’t look like much, but it didn’t feel right to me. Turned out to be squamous cell carcinoma, a more dangerous type of skin cancer than I’d had before..</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 team-card">
+                    <div class="card shadow border-0">
+                        <img class="card-img-top" src="https://4ag46i294nta1038p13v77x1-wpengine.netdna-ssl.com/wp-content/uploads/adam-nicole-degi-340x240.jpg" height="250" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title landing-card-title">Uniting to Fight Skin Cancer</h5>
+                            <p class="card-text intro">After three surgeries and immunotherapy to treat stage III melanoma, Adam Degi has a newfound determination to educate people about the dangers of skin cancer..</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 team-card">
+                    <div class="card shadow border-0">
+                        <img class="card-img-top" src="https://4ag46i294nta1038p13v77x1-wpengine.netdna-ssl.com/wp-content/uploads/pharmacist-advising-prescription-GettyImages-1144631119-340x240.jpg" height="250" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title landing-card-title">Nine Tips for Taking Your Medication Safely: What Skin Cancer Patients Need to Know</h5>
+                            <p class="card-text intro">Whether you have a new, unfamiliar prescription or you’re unsure how to juggle taking several medications, here are some recommendations to be sure you’re making the safest choices..</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+     
+    <!-- Team section -->
+    <section class="pb-5 text-center">
+        <!-- Team Header -->
+        <header class="team-heading mb-5 p-4">
+            <div class="container">
+            <h1 class="font-weight-light text-white">Meet the Team</h1>
+            </div>
+        </header>
+    
+        <!-- Team Content -->
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- Team Member 1 -->
+                <div class="col-xl-3 col-md-6 team-card">
+                    <div class="card border-0 shadow">
+                        <img src="https://source.unsplash.com/TMgQMXoglsM/500x350" height="200" alt="...">
+                        <div class="card-body text-center">
+                            <h5 class="card-title mb-0">AWAIZ HASSAN</h5>
+                            <div class="card-text text-black-50">Web Developer</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Team Member 2 -->
+                <div class="col-xl-3 col-md-6 team-card">
+                    <div class="card border-0 shadow">
+                        <img src="{% static 'images/profile.jpg' %}" height="200" alt="...">
+                        <div class="card-body text-center">
+                            <h5 class="card-title mb-0">AHSAN ALI</h5>
+                            <div class="card-text text-black-50">Web Developer</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}

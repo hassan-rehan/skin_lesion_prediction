@@ -1,0 +1,75 @@
+
+<div class="modal fade" id="edit-profile-modal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    
+    <form method="post" action="/patient/{{ request.session.user_id }}/profile/update">
+        {% csrf_token %}
+      <div class="modal-content">
+  
+        <div class="modal-header">
+          <h5 class="modal-title" id="editProfileModalLabel">Profile Update</h5>
+          <button type="button" id="edit-profile-modal-close-button-1" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="introduction" class="modal-form-field-title">Introduction</label>
+                 <p class="m-md-bottom modal-form-field-guide">Tell us about yourself.</p>
+                <textarea class="form-control" name="introduction" rows="4" id="introduction" required>{{ profile_data.introduction }}</textarea>
+            </div>
+  
+            <div class="form-group">
+              <label for="occupation" class="modal-form-field-title">Occupation</label>
+              <p class="m-md-bottom modal-form-field-guide">Write the name of your occupation. (e.g. Teacher, Engineer, Plumber )</p>
+              <input type="text" name="occupation" class="form-control" value="{{ profile_data.occupation }}" id="occupation" required>
+            </div>
+  
+            <div class="form-group">
+              <label for="address" class="modal-form-field-title">Address</label>
+              <p class="m-md-bottom modal-form-field-guide">Enter your current living address.</p>
+              <input type="text" name="address" class="form-control" id="address" value="{{ profile_data.address }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone" class="modal-form-field-title">Phone</label>
+                <p class="m-md-bottom modal-form-field-guide">Enter your phone number. (Optional)</p>
+                <input type="text" name="phone" class="form-control" id="phone" value="{{ profile_data.phone }}">
+            </div>
+
+            <div class="form-row">
+                <div class="col">
+                    <label for="heart_beat" class="modal-form-field-title">Heart Beat</label>
+                    <p class="m-md-bottom modal-form-field-guide">per minute (Optional)</p>
+                    <input type="text" name="heart_beat" class="form-control" value="{{ profile_data.heart_beat }}" id="heart_beat">
+                </div>
+                <div class="col">
+                    <label for="blood_pressure" class="modal-form-field-title">Blood Pressure</label>
+                    <p class="m-md-bottom modal-form-field-guide">in mmHg (Optional)</p>
+                    <input type="text" name="blood_pressure" class="form-control" value="{{ profile_data.blood_pressure }}" id="blood_pressure">
+                </div>
+                <div class="col">
+                    <label for="sugar" class="modal-form-field-title">Sugar Level</label>
+                    <p class="m-md-bottom modal-form-field-guide">in mg/dL (Optional)</p>
+                    <input type="text" name="sugar" class="form-control" value="{{ profile_data.sugar }}" id="sugar">
+                </div>
+                <div class="col">
+                    <label for="haemoglobin" class="modal-form-field-title">Haemoglobin</label>
+                    <p class="m-md-bottom modal-form-field-guide">in percentage (Optional)</p>
+                    <input type="text" name="haemoglobin" class="form-control" value="{{ profile_data.haemoglobin }}" id="haemoglobin">
+                </div>
+            </div>
+        </div>
+  
+        <div class="modal-footer">
+          <button type="button" id="edit-profile-modal-close-button-2" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" id="edit-profile-modal-save-changes-button" class="btn btn-primary">Save changes</button>
+        </div>
+  
+      </div>
+    </form>
+  
+    </div>
+  
+  </div>

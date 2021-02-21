@@ -1,0 +1,70 @@
+{% extends 'patient-base.html' %}
+
+{% block customLinks %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#searchinput").on("keyup", function() {
+      var filter = $(this).val().toLowerCase(); // get the value of the input, which we filter on
+      $(".card .doc-address").filter(function() {
+        $(this).closest(".card").toggle($(this).text().toLowerCase().indexOf(filter) > -1)
+      });
+    });
+  });
+</script>
+
+{% endblock %}
+
+{% block content %}
+    {% include 'submit_proposal_modal.html' %}
+    <div class="container my-5" style="min-height: 100vh;">
+    
+      <div class="row">
+        <div class="col-sm-7">
+          <div class="h2">Doctors available</div>
+        </div>
+  
+        <div class="col-sm-5">
+          <div class="form-group">
+            <label for="searchinput">Search by address:</label>
+            <input id="searchinput" type="search" class="form-control">            
+          </div>
+        </div>
+
+      </div>
+
+
+        <div class="row" style="margin-top:3rem;">
+          {% if doctors.length != 0 %}
+            {% load static %}
+
+            {% for doctor in doctors %}
+              <div class="col-md-6">
+                <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                    <div class="card-body d-flex flex-column align-items-start">
+                      <strong class="d-inline-block mb-2 text-primary">{{ doctor.name }}</strong>
+                      <h6 class="mb-0 doc-address">
+                          {{ doctor.office_address }}
+                      </h6>
+                      <div class="mb-1 text-muted small">Phone: {{ doctor.phone }}</div>
+                      <p class="card-text mb-auto intro">{{ doctor.introduction }}</p>
+                      <div class="w-100">
+                        <a class="btn btn-outline-primary btn-sm float-left" role="button" href="/doctor/{{ doctor.id }}/view_profile">View Profile</a>
+                        <a class="btn btn-outline-primary btn-sm float-right submit-proposal-btn" id="{{ doctor.id }}-submit-button" data-toggle="modal" data-target="#submit-proposal-modal" data-did="{{ doctor.id }}" role="button" href="#">Ask for Appointment</a>
+                      </div>
+                    </div>
+                    {%  if doctor.pic != "" %}
+                      <img class="card-img-right flex-auto d-none d-lg-block" alt="Thumbnail [200x250]" src="{{ doctor.pic.url }}" style="width: 200px; height: 250px;">
+                    {% else %}
+                      <img class="card-img-right flex-auto d-none d-lg-block" alt="Thumbnail [200x250]" src="{% static 'images/no-profile-pic.png' %}" style="width: 200px; height: 250px;">
+                    {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-center w-100">There is no doctor on this platform yet.</p>
+          {% endif %}
+        </div> <!-- row -->
+        
+    </div> <!-- container -->
+
+{% endblock %}

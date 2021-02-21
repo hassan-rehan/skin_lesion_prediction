@@ -1,0 +1,193 @@
+ 
+{% extends 'doctor-base.html' %}
+
+{% block customLinks %}
+<link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+
+<style type="text/css">
+
+    h1,h2,h3,h4,h5,h6 {
+        font-family: 'Saira Extra Condensed', serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #343a40;
+    }
+
+    h1 {
+        font-size: 6rem;
+        line-height: 5.5rem;
+    }
+
+    h2 {
+        font-size: 3.5rem;
+    }
+
+    a {
+        color: #2196f3;
+    }
+
+    a:hover,a:focus,a:active {
+        color: #0f72c1;
+    }
+
+    .subheading {
+        text-transform: uppercase;
+        font-weight: 500;
+        font-family: 'Saira Extra Condensed', serif;
+        font-size: 1.35rem;
+    }
+
+    .list-social-icons a {
+        color: #495057;
+    }
+
+    .list-social-icons a:hover {
+        color: #2196f3;
+    }
+
+    .list-social-icons a .fa-lg {
+        font-size: 1.75rem;
+    }
+
+    .list-icons {
+        font-size: 3rem;
+    }
+
+    .list-icons .list-inline-item i:hover {
+        color: #2196f3;
+    }
+
+    section.resume-section, .sidebar {
+        padding-top: 5rem !important;
+        padding-bottom: 5rem !important;
+        min-height: 100vh;
+    }
+
+    .text-primary {
+        color: #2196f3 !important;
+    }
+
+    #about {
+        background-image: url(../../static/images/profile-banner.jpg); 
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+
+    .bg-primary {
+        background-color: #2196f3 !important;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+    
+    <!-- BEGIN: Main Menu-->
+    <!-- start page content -->
+    {% include 'edit_doc_profile_modal.html' %}
+    {% include 'upload_profile_pic_modal.html' %}
+
+    {% if doctor_data != 0 and profile_data != 0 %}
+
+        {% if status %}
+            <div class="alert alert-success" role="alert" id="info-message-page">
+            {{ status }}
+            </div>
+        {% endif %}
+        
+        {% load static %}
+        <div class="container-fluid p-0">
+            <div id="edit-button-div">
+                <button data-toggle="modal" data-target="#edit-profile-modal" id="edit-button"><i class="fas fa-edit"></i></button>
+            </div>
+            <div class="d-flex" style="flex-wrap: wrap;">
+                <div class="sidebar bg-primary p-3 p-lg-5" style="flex:25%;text-align:center;">
+                    <div style="position:relative; width:100%;">
+                        {%  if profile_data.pic != "" %}
+                            <img id="profile-picture" class="rounded-circle mb-2" width="80%" src="{{ profile_data.pic.url }}"  alt="Profile pic">
+                        {% else %}
+                            <img id="profile-picture" class="rounded-circle mb-2" width="80%" src="{% static 'images/no-profile-pic.png' %}" alt="Profile pic">
+                        {% endif %}
+
+                        <a href="#" data-toggle="modal" data-target="#upload-profile-pic-modal">
+                            <div class="change_pic_icon">
+                                <i class="fas fa-camera" style="color:black;"></i>
+                            </div>
+                        </a>
+                    </div>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            {% if profile_data.phone != "" %}
+                                <a class="nav-link" href="#">Phone: {{ profile_data.phone }}</a>
+                            {% else %}
+                                <a class="nav-link" href="#">Phone: No given yet.</a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+                <section class="resume-section p-3 p-lg-5" style="flex:75%;" id="about">
+                    <div class="my-auto" >
+                        <img src="{% static 'images/logo-s.png' %}" class="img-fluid mb-3" alt="">
+                        <h1 class="mb-0" style="max-width: 500px;">{{ doctor_data.first_name }}
+                        <span class="text-primary">{{ doctor_data.last_name }}</span>
+                        </h1>
+                        <div class="subheading mb-5" style="max-width: 500px;"><a href="#">OFFICE ADDRESS: </a>{{ profile_data.office_address }}
+                        </div>
+                        <p class="mb-5" style="max-width: 500px;" >{{ profile_data.introduction }}</p>
+                        <ul class="list-inline list-social-icons mb-0">
+                            <li class="list-inline-item">
+                                <a href="#">
+                                    <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#">
+                                    <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#">
+                                    <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#">
+                            <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </div>
+    
+    {% else %}
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('#doctorNav').remove();
+                $('.landing-footer').remove();
+                $('#edit-profile-modal-close-button-1').remove();
+                $('#edit-profile-modal-close-button-2').remove();
+                $('#edit-profile-modal').modal({backdrop: 'static', keyboard: false}, 'show');
+            });
+        </script>      
+    {% endif %}
+
+{% endblock %}

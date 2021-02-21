@@ -1,0 +1,32 @@
+{% extends 'landing-base.html' %}
+
+{% block customLinks %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.hiw').hide();
+        $('.blogs').hide();
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="main-career-container">
+    <div class="masthead">
+        <div class="masthead-bg"></div>
+            <div class="container h-100">
+                <div class="row h-100">
+                    <div class="col-12 my-auto">
+                        <div class="masthead-content text-white py-5 py-md-0">
+                            <h1 class="mb-3">Wanna join us ?</h1>
+                            <p class="mb-5"> If you are a certified doctor then you are good to go.
+                                            Create your doctor account by clicking the button below!</p>
+                            <a class="btn btn-secondary" type="button" id="submit-button" href="{% url 'doctor_signup' %}">SignUp as doctor!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

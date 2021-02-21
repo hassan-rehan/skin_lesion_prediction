@@ -1,0 +1,51 @@
+{% extends 'landing-base.html' %}
+
+{% block customLinks %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.hiw').hide();
+        $('.blogs').hide();
+    });
+</script>
+{% endblock %}
+ 
+{% block content %}
+
+{% if info %}
+    <div class="alert alert-success" role="alert" id="info-message-page">
+        {{ info }}
+    </div>
+{% endif %}
+
+  <div class="login-outer-container">
+    <div class="login-middle-container">
+      <div class="login-inner-container">
+
+        <div id="login-form">
+          <form method="POST">
+            {% csrf_token %}
+            <fieldset class="login-clearfix">
+              <p><span class="fas fa-user"></span><input type="email"  Placeholder="Email" name="email" required></p>
+              <p><span class="fas fa-lock"></span><input type="password"  Placeholder="Password" name="password" required></p>
+              <input type="hidden" name="fcm_token" id="fcm_token" value="">
+              <div class="login-form-footer">
+                  <span class="pass-reset-link"><a class="small-text" href="#">Forgot password?</a></span>
+                  <span class="signin-button"><input type="submit" value="Sign In"></span>
+              </div>
+            </fieldset>
+            <div class="clearfix"></div>
+          </form>
+          <div class="clearfix"></div>
+        </div> 
+        <!-- end login -->
+
+        <div class="logo-login my-auto">
+          {% load static %}
+          <img src="{% static 'images/logo_transparent.png' %}" alt="Skin Lesion" width="100%" height="100">
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
